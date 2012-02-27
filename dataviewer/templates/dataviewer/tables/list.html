@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+	<a href="/tables/new">Create new table</a>
+	
+	<p/>
+
+	{% regroup tables|dictsort:"model" by model as model_groups %}
+	{% for group in model_groups %}
+		<h4>Tables for {{ group.grouper }} </h4>
+		<ul>
+			{% for table in group.list %}
+				{% if table.name %}
+					<li><a href="/tables/edit/{{table.id}}">{{table.name}}</a> &mdash; <a href="/tables/delete/{{table.id}}" class="small">delete</a></li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+	{% endfor %}
+
+{% endblock %}

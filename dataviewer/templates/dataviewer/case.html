@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h2>Summary</h2>
+{{summary|safe}}
+
+<h2>Status</h2>
+{{status|safe}}
+
+<h2>Disposition</h2>
+{{disposition|safe}}
+
+<h2>Filings</h2>
+{{filings|safe}}
+
+
+{% endblock %}

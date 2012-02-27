@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Create new Table</h2>
+
+<p>
+	Choose a model that is installed in the system to create a table for.
+</p>
+<ul>
+{% for model in available_models %}
+	<li><a href='/tables/create?model_name={{model.class}}'>{{model.name}}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

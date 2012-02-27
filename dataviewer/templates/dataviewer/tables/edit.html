@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form action="/tables/update/{{table.id}}" method="POST">
+{% csrf_token %}
+<p>	
+Name:<input type="text" name="name" value="{{table.name}}">
+</p>
+<p>
+Model: {{table.model}}
+</p>
+<p>	
+Fields in table:
+<table>
+	<tr>
+		<th></th>
+		<th>Field</th>
+		<th>Overridden name</th>
+	</tr>
+{% for view_field in table.fields.all %}
+	<tr>
+		<td style="text-align: center">X</td>
+		<td>{{view_field.field}}</td> 
+		<td><input type="text" name="viewfield_{{view_field.id}}" value="{{view_field.name}}"></td>
+	</tr>
+{% endfor %}
+</table>
+</p>
+
+<p>
+Available fields:
+<ul>
+	<select name="fields" multiple>
+	{% for field in available_fields %}
+		<option value="{{field}}">{{field}}</option>
+	{% endfor %}
+	</select>
+</ul>
+</p>
+
+<p>
+Available functions:
+<ul>
+	<select name="functions" multiple>
+	{% for function in functions %}
+		<option value="{{function}}">{{function}}</option>
+	{% endfor %}
+	</select>
+</ul>
+</p>
+
+<p>
+Available Many to Many Fields:
+<table>
+	<tr>
+		<th>field</th>
+		<th>embedded table to use</th>
+	</tr>
+	{% for field,tables in mtom_fields.items %}
+	<tr>
+		<td>{{field}}</td>
+		<td>
+			<select name='{{field}}_table'>
+			{% for table in tables %}
+				<option value="{{table.id}}">{{table.name}}</option>
+			{% endfor %}
+			</select>
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+</p>
+
+
+<input type="submit" value="Update">
+</form>
+{% endblock %}

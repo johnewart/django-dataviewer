@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<a href="{% url dataviewer.new_page %}">Create new page</a>
+
+	{% regroup pages|dictsort:'model' by model as model_groups %}
+	{% for group in model_groups %}
+		<h4>Pages for {{ group.grouper }} </h4>
+		<ul>
+		{% for page in group.list %}
+			{% if page.title %}
+			<li><a href="{% url dataviewer.edit_page page.id %}">{{page.title}}</a> &mdash; <a href="{% url dataviewer.delete_page page.id %}" class="small">delete</a></li>
+			{% endif %}
+		{% endfor %}
+		</ul>
+	{% endfor %}
+{% endblock %}

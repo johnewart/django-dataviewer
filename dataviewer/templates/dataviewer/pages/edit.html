@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form action="{% url dataviewer.update_page page.id %}" method="POST">
+{% csrf_token %}
+<p>	
+Name:<input type="text" name="name" value="{{page.name}}">
+</p>
+<p>
+	Title:<input type="text" name="title" value="{{page.title}}">
+</p>
+
+<p>
+	Permitted Groups:
+	<ul>
+		{% for group in page.groups.all %}
+		<li>{{group.name}}</li>
+		{% endfor %}
+	</ul>
+</p>
+
+<p>
+Available Groups:
+<ul>
+	<select name="groups" multiple>
+	{% for group in groups %}
+		<option value="{{group.id}}">{{group.name}}</option>
+	{% endfor %}
+	</select>
+</ul>
+</p>
+
+<p>
+	Current Tables:
+	<ul>
+		{% for table in page.tables.all %}
+		<li>{{table.name}}</li>
+		{% endfor %}
+	</ul>
+</p>
+
+<p>
+Available Tables:
+<ul>
+	<select name="tables" multiple>
+	{% for table in tables %}
+		<option value="{{table.id}}">{{table.name}}</option>
+	{% endfor %}
+	</select>
+</ul>
+</p>
+
+<p>
+Available Many to Many Fields:
+<table>
+	<tr>
+		<th>field</th>
+		<th>embedded table to use</th>
+	</tr>
+	{% for field,tables in mtom_fields.items %}
+	<tr>
+		<td>{{field}}</td>
+		<td>
+			<select name='{{field}}_m2mtable'>
+			{% for table in tables %}
+				<option value="{{table.id}}">{{table.name}}</option>
+			{% endfor %}
+			</select>
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+</p>
+
+<input type="submit" value="Update">
+</form>
+{% endblock %}

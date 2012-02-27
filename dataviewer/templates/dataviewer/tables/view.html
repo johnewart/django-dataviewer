@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<select name="fields" multiple>
+{% for field in fields %}
+	<option value="{{field}}">{{field}}</option>
+{% endfor %}
+</select>
+{% endblock %}

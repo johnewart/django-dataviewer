@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% load dataviewer_tags %}
+
+{% block content %}
+
+<p>{{pagecontent}}</p>
+{% for table in tables %}
+<h3>{{table.title}}</h3>
+<table class="data" border="1">
+{{table.html|safe}}
+</table>
+{% endfor %}
+{% endblock %}

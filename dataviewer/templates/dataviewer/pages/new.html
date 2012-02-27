@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form action="{% url dataviewer.create_page }}" method="POST">
+{% csrf_token %}
+<p>	
+Title: <input type="text" name="title" value="">
+</p>
+
+<p>
+	Choose a model that is installed in the system to create a page for.
+</p>
+<select name="model">
+{% for model in available_models %}
+	<option value="{{model.class}}">{{model.name}}</option>
+{% endfor %}
+</select>
+
+<input type="submit" value="Create">
+</form>
+{% endblock %}
