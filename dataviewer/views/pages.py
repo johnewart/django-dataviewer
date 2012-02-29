@@ -182,11 +182,10 @@ def view(request, pagename):
 	pk_id = request.session["dataviewer_pk_id"]
 	model_name = request.session["dataviewer_model_name"]
 	
-	package = ".".join(model_name.split(".")[1:-2])
+	package = ".".join(model_name.split(".")[0:-2])
 	modelname = model_name.split(".")[-1]
 	
 	print "Model name: %s (%d)" % (model_name, int(pk_id))
-	
 	__import__(package)
 	
 	model = eval(modelname)
