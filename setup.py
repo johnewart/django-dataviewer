@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-dataviewer',
-    version='0.5.0',
+    version='0.5.1',
     description='A Django application you can use to create views of your models and data.',
     long_description=open('README.rst').read(),
     author='John Ewart',
