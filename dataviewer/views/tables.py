@@ -113,11 +113,11 @@ def edit(request, table_id):
     # Introspect the model 
     model_name = table.model
 
-    package = ".".join(model_name.split(".")[1:-2])
+    package = ".".join(model_name.split(".")[0:-2])
     modelname = model_name.split(".")[-1]
     model = models.get_model(package, modelname)
 
-    print "Model: %s <--> %s" % (model_name,model)
+    print "Model: (%s) %s <--> %s" % (package, model_name,model)
 
     existing_fields = []
     fields = []
@@ -126,11 +126,12 @@ def edit(request, table_id):
     for field in table.fields.all():
         existing_fields.append(field.field)
         
-    for field in model._meta.fields:
-        try:
-            i = existing_fields.index(field.attname)
-        except ValueError:
-            fields.append(field.attname)
+    if model: 
+        for field in model._meta.fields:
+            try:
+                i = existing_fields.index(field.attname)
+            except ValueError:
+                fields.append(field.attname)
             
     mtom_fields = {}
     
