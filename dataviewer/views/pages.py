@@ -39,6 +39,7 @@ def create(request):
         page.title = request.POST["title"]
         page.name = slugify(request.POST["title"])
         page.model = request.POST['model']
+        page.save()
         return HttpResponseRedirect("/pages/edit/%d" % (page.id))
 
 def new(request):
