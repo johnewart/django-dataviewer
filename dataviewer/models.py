@@ -22,7 +22,7 @@ class ViewTable(models.Model):
 
 class Page(models.Model):
 	"Viewable page we can use to create custom groupings of data"
-	name = models.SlugField(help_text="Automatically derived from the title, this is what becomes the URL (i.e /tabs/[[name]])")
+	name = models.SlugField(unique=True,help_text="Automatically derived from the title, this is what becomes the URL (i.e /tabs/[[name]])")
 	title = models.CharField(max_length=200)
 	model = models.CharField(max_length=200)
 	body = models.TextField('Entry body as HTML', editable=True, blank=True, null=True)

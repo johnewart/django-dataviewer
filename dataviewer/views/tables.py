@@ -92,8 +92,19 @@ def update(request, table_id):
         table.save()
         
     return HttpResponseRedirect("/tables/")
-        
-    
+
+def remove_field(request):
+    try:
+        table_id = request.GET.get("table_id", request.GET.get("TABLE_ID"))
+        viewfield_id = request.GET.get("viewfield_id", request.GET.get("VIEWFIELD_ID"))
+        table = ViewTable.objects.get(pk = table_id)
+        viewfield = ViewField.objects.get(pk = viewfield_id)
+        table.fields.remove(viewfield)
+        return HttpResponse(status=200)
+    except:
+        raise
+        return HttpResponse(status=500)
+
 def view(request, table_id):
     available_models = models.get_models()
     model_list = []
@@ -122,6 +133,7 @@ def edit(request, table_id):
     existing_fields = []
     fields = []
     functions = []
+    mtom_fields = {}
     
     for field in table.fields.all():
         existing_fields.append(field.field)
@@ -133,26 +145,24 @@ def edit(request, table_id):
             except ValueError:
                 fields.append(field.attname)
             
-    mtom_fields = {}
-    
-    for mtom in model._meta.many_to_many:
-        m = re.match(r"<class '(.*?)'>", "%s" % (mtom.rel.to))
-        klass = m.group(1)
-        mtom_fields[mtom.name] = ViewTable.objects.filter(model=klass).all()
+        for mtom in model._meta.many_to_many:
+            m = re.match(r"<class '(.*?)'>", "%s" % (mtom.rel.to))
+            klass = m.group(1)
+            mtom_fields[mtom.name] = ViewTable.objects.filter(model=klass).all()
         
-    import pprint
-    pprint.pprint(mtom_fields)
-    all_funcs = dir(model)
+        import pprint
+        pprint.pprint(mtom_fields)
+        all_funcs = dir(model)
     
-    for function_name in all_funcs:
-        if not function_name.startswith("_"):
-            try: 
-                i = existing_fields.index(function_name)
-            except ValueError:
-                functions.append(function_name)
+        for function_name in all_funcs:
+            if not function_name.startswith("_"):
+                try: 
+                    i = existing_fields.index(function_name)
+                except ValueError:
+                    functions.append(function_name)
 
-    fields.sort()
-    functions.sort()
+        fields.sort()
+        functions.sort()
 
     ctxt = { 
         "table": table, 
